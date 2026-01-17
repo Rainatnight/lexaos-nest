@@ -8,12 +8,11 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async getUsersForChat(userId: string) {
-    console.log('base');
     const users = await this.userModel
       .find({ _id: { $ne: userId } }, { login: 1 })
       .lean()
       .exec();
-    console.log(users);
+
     return users;
   }
 }

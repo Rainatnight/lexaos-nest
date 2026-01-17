@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cors from 'cors';
 import * as fileUpload from 'express-fileupload';
 import * as passport from 'passport';
 import * as dotenv from 'dotenv';

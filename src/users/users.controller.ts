@@ -13,9 +13,8 @@ export class UsersController {
   @Get('get-for-chat1')
   @UseGuards(AuthStrictGuard)
   async getUsersForChat(@Req() req: RequestWithUser) {
-    console.log('here');
     const { userId } = req.user;
-    console.log(userId);
+
     const users = await this.usersService.getUsersForChat('uLzCGmK6N4EXGrwKR');
     return { users };
   }
