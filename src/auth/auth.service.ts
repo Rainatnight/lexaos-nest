@@ -88,4 +88,17 @@ export class AuthService {
       );
     }
   }
+
+  async getUser(userId: string) {
+    const user = await this.userModel.findOne(
+      { _id: userId },
+      {
+        _id: 0,
+        id: '$_id',
+        login: 1,
+      },
+    );
+
+    return user;
+  }
 }

@@ -1,7 +1,8 @@
-import { Controller, Put, Req } from '@nestjs/common';
+import { Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
 import { UserType } from 'src/guards/userType';
 import { AuthService } from './auth.service';
+import { AuthStrictGuard } from 'src/guards/authStrict.guard';
 
 type RequestWithUser = ExpressRequest & { user: UserType };
 
@@ -9,11 +10,20 @@ type RequestWithUser = ExpressRequest & { user: UserType };
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Put('login1')
+  @Put('login')
   async loginFunc(@Req() req: RequestWithUser) {
     const { login, password } = req.body;
 
     const data = await this.authService.login(login, password);
     return data;
+  }
+
+  @Get('user')
+  @UseGuards(AuthStrictGuard)
+  async getUserData(@Req() req: RequestWithUser) {
+    const { userId } = req.user as UserType;
+    const data = await this.authService.getUser(userId);
+
+    return { user: data };
   }
 }

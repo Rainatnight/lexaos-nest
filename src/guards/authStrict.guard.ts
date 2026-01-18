@@ -6,11 +6,13 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
-import config from 'config';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/users/schemas/users.schema';
 import { UserType } from './userType';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -34,7 +36,7 @@ export class AuthStrictGuard implements CanActivate {
     if (!token) throw new UnauthorizedException('No authorization');
 
     try {
-      const decoded = jwt.verify(token, config.get('jwtSecret')) as UserType;
+      const decoded = jwt.verify(token, process.env.jwtSecret) as UserType;
 
       const matchUser = await this.userModel
         .findOne({ _id: decoded.userId }, { login: 1 })
