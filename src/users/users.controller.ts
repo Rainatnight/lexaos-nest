@@ -10,7 +10,7 @@ type RequestWithUser = ExpressRequest & { user: UserType };
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('get-for-chat1')
+  @Get('get-for-chat')
   @UseGuards(AuthStrictGuard)
   async getUsersForChat(@Req() req: RequestWithUser) {
     const { userId } = req.user;

@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { errorsCodes } from 'src/common/errors';
 import * as dotenv from 'dotenv';
+import { createId } from 'src/common/createId';
 
 dotenv.config();
 
@@ -100,5 +101,43 @@ export class AuthService {
     );
 
     return user;
+  }
+
+  async createUser(login: string, password: string) {
+    if (!login || !password) return;
+
+    const existingUser = await this.userModel.findOne({ login }).lean();
+    if (existingUser) {
+      throw new HttpException(
+        {
+          code: errorsCodes.USER_ALREADY_VERIFIED,
+          msg: 'User already exists',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await this.userModel.create({
+      _id: createId(),
+      login,
+      password: hashedPassword,
+    });
+
+    const expiredToken = new Date(
+      Date.now() + DEFAULT_LOGIN_EXPIRATION_DAYS_METEOR * 86400000,
+    );
+
+    const token = jwt.sign(
+      {
+        userId: newUser?._id,
+        login: newUser.login,
+      },
+      process.env.jwtSecret,
+
+      { expiresIn: expiredToken.getTime() },
+    );
+    return { token, expiredToken, userId: newUser._id, login };
   }
 }

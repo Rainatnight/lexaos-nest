@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
 import { UserType } from 'src/guards/userType';
 import { AuthService } from './auth.service';
@@ -25,5 +25,13 @@ export class AuthController {
     const data = await this.authService.getUser(userId);
 
     return { user: data };
+  }
+
+  @Post('/create')
+  async createUser(@Req() req: RequestWithUser) {
+    const { login, password } = req.body;
+    const data = await this.authService.createUser(login, password);
+
+    return data;
   }
 }
