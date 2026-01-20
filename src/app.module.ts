@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { FoldersModule } from './folders/folders.module';
+import { ChatsModule } from './chats/chats.module';
 dotenv.config();
 
 @Module({
@@ -13,6 +14,7 @@ dotenv.config();
     UsersModule,
     AuthModule,
     FoldersModule,
+    ChatsModule,
   ],
   controllers: [],
   providers: [],
