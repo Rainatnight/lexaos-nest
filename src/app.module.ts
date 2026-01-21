@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { FoldersModule } from './folders/folders.module';
 import { ChatsModule } from './chats/chats.module';
+import { FilesModule } from './files/files.module';
 dotenv.config();
 
 @Module({
@@ -15,6 +16,7 @@ dotenv.config();
     AuthModule,
     FoldersModule,
     ChatsModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],

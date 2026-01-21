@@ -15,7 +15,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.use(fileUpload({}) as any);
+  // app.use(fileUpload({}) as any);
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true }));
   app.use(passport.initialize() as any);
